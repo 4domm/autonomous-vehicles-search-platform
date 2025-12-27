@@ -57,8 +57,7 @@ class WaymoPreprocessor(Preprocessor):
             self.cameras = None
         self.resample_seconds = resample_seconds
 
-        if not os.path.exists(DATA_FOLDER):
-            os.mkdir(DATA_FOLDER)
+        os.makedirs(DATA_FOLDER, exist_ok=True)
 
         # for iterable
         self.iteration = 0
