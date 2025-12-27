@@ -52,7 +52,6 @@ class ArgoversePreprocessor(Preprocessor):
         if not os.path.exists(DATA_FOLDER):
             os.mkdir(DATA_FOLDER)
 
-        # for iterable
         self.iteration = 0
 
     def download_part(self, split: str, part: int):
