@@ -60,12 +60,18 @@ class ArgoversePreprocessor(Preprocessor):
 
         with requests.get(url, stream=True, timeout=60) as r:
             r.raise_for_status()
-            total = int(r.headers.get("Content-Length", 0))
+
+            remote_size = int(r.headers.get("Content-Length", 0))
+            local_size = os.path.getsize(out_path) if os.path.exists(out_path) else 0
 
             downloaded = os.path.getsize(out_path) if os.path.exists(out_path) else 0
             mode = "ab" if downloaded > 0 else "wb"
 
             headers = {}
+
+            if remote_size and local_size >= remote_size:
+                os.system(f'tar -xvf "{out_path}" -C "{DATA_FOLDER}"')
+                return out_path
             if downloaded > 0:
                 headers = {"Range": f"bytes={downloaded}-"}
                 r.close()
@@ -73,10 +79,10 @@ class ArgoversePreprocessor(Preprocessor):
                 r.raise_for_status()
 
                 remaining = int(r.headers.get("Content-Length", 0))
-                total = downloaded + remaining
+                remote_size = downloaded + remaining
 
             pbar = tqdm(
-                total=total,
+                total=remote_size,
                 initial=downloaded,
                 unit="B",
                 unit_scale=True,
@@ -89,7 +95,7 @@ class ArgoversePreprocessor(Preprocessor):
                         f.write(chunk)
                         pbar.update(len(chunk))
 
-        os.system(f"tar -xvf {out_path} -C {DATA_FOLDER}")
+        os.system(f'tar -xvf "{out_path}" -C "{DATA_FOLDER}"')
         return out_path
 
     def filter_by_step_seconds(self, files: List[str]) -> List[str]:
