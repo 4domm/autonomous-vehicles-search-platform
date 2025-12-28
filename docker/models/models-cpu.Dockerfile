@@ -14,7 +14,7 @@ from configs.hw_settings import TORCH_CONFIG, EMBEDDER_CONFIG, VLM_CONFIG
 
 print(f"TORCH_VERSION={TORCH_CONFIG.TORCH_VERSION}")
 print(f"TORCH_CUDA_TAG={TORCH_CONFIG.TORCH_CUDA_TAG or 'cpu'}")
-print(f"HF_HOME={getattr(TORCH_CONFIG, 'HF_HOME', '.cache/huggingface')}")
+print(f"HF_HOME={'app/' + getattr(TORCH_CONFIG, 'HF_HOME', '.cache/huggingface')}")
 print(f"EMBEDDER_PORT={EMBEDDER_CONFIG.PORT}")
 print(f"VLM_PORT={VLM_CONFIG.PORT}")
 PY
