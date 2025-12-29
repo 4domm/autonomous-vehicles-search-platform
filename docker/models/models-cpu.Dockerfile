@@ -45,7 +45,8 @@ EXPOSE ${EMBEDDER_PORT}
 
 CMD sh -c "uvicorn backend.models.embedder.embedder:app \
   --host 0.0.0.0 \
-  --port ${EMBEDDER_PORT} \
+  --port 8000 \
   --log-level debug \
   --reload"
+
 # uvicorn backend.models.embedder.embedder:app --host 0.0.0.0 --port 8000 --log-level debug --reload
